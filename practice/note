@@ -1,0 +1,164 @@
+Your code looks like it is set up to track student attendance and send email notifications based on their attendance records. However, there are a few potential issues and improvements that can be made. Here are some suggestions:
+
+### 1. **Use `==` for Comparisons**
+Ensure that all instances of `is` used for comparing values, such as student roll numbers, are replaced with `==`. This applies in the following places:
+
+```python
+if sheet.cell(row=i, column=1).value == student:
+```
+
+### 2. **Quit SMTP Connection Outside the Loop**
+Currently, you are quitting the SMTP connection after sending the first email. This should be done after all emails have been sent. Move `s.quit()` outside of the loop in both `mailstu` and `mailstaff` functions.
+
+#### Updated Functions
+```python
+def mailstu(li, msg): 
+    from_id = 'ram0102@gmail.com'
+    pwd = '1234'
+    s = smtplib.SMTP('smtp.gmail.com', 587, timeout=120) 
+    s.starttls() 
+    s.login(from_id, pwd) 
+
+    for i in range(len(li)): 
+        to_id = li[i] 
+        message = MIMEMultipart() 
+        message['Subject'] = 'Attendance report'
+        message.attach(MIMEText(msg, 'plain')) 
+        content = message.as_string() 
+        s.sendmail(from_id, to_id, content) 
+    
+    s.quit()  # Quit the SMTP connection here
+    print("Mail sent to students") 
+
+def mailstaff(mail_id, msg): 
+    from_id = 'ram0102@gmail.com'
+    pwd = '1234'
+    to_id = mail_id 
+    message = MIMEMultipart() 
+    message['Subject'] = 'Lack of attendance report'
+    message.attach(MIMEText(msg, 'plain')) 
+    s = smtplib.SMTP('smtp.gmail.com', 587, timeout=120) 
+    s.starttls() 
+    s.login(from_id, pwd) 
+    content = message.as_string() 
+    s.sendmail(from_id, to_id, content) 
+    s.quit()  # Quit the SMTP connection here
+    print('Mail sent to staff') 
+```
+
+### 3. **Error Handling**
+Consider adding error handling, especially for sending emails and accessing the Excel file. This can help you identify issues without crashing the program.
+
+#### Example for Email Sending
+```python
+try:
+    s.sendmail(from_id, to_id, content)
+except Exception as e:
+    print(f"Failed to send email to {to_id}: {e}")
+```
+
+### 4. **Store Credentials Securely**
+Avoid hardcoding sensitive information like email addresses and passwords directly in the code. Use environment variables or configuration files instead.
+
+### 5. **Improving User Input Validation**
+You may want to add input validation to ensure the user inputs valid data (e.g., valid roll numbers and subject choices).
+
+### 6. **Refactoring for Clarity**
+Consider breaking down your code into smaller functions for clarity, especially for sections handling user input or processing attendance. This will improve readability and maintainability.
+
+### 7. **Check File Existence**
+Make sure the file `attendance.xlsx` exists at the specified path before trying to open it. You can add a check like this:
+
+```python
+import os
+
+if not os.path.exists(r'C:\Users\DELL\Desktop\sakshi\attendance.xlsx'):
+    print("Attendance file not found!")
+    exit()
+```
+
+### Conclusion
+By implementing these improvements, your code will be more robust, maintainable, and secure. Let me know if you need further assistance or clarification on any point!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The `TypeError` you're encountering indicates that you are trying to concatenate a string with an integer, which is not allowed in Python. This likely happens when you are trying to increment the value of `m`, which is expected to be an integer but is actually a string.
+
+### Where the Error Occurs
+In your code, `m` is being set to the value of a cell from the Excel sheet:
+
+```python
+m = sheet.cell(row=i, column=3).value  # or column 4 or 5
+```
+
+If the cell contains a string (e.g., if it was initially empty or has been formatted as text), trying to do `m = m + 1` will raise a `TypeError`.
+
+### How to Fix It
+You need to ensure that `m` is treated as an integer. Here’s how to modify that section of your code:
+
+1. **Convert to Integer:**
+   Before you increment `m`, check if it’s a string and convert it to an integer. If the cell is empty or contains a non-integer value, initialize `m` to `0`.
+
+### Updated Code Snippet
+You can modify the relevant parts of your code like this:
+
+```python
+for i in range(2, r+1): 
+    if y == 1: 
+        if sheet.cell(row=i, column=1).value == student: 
+            m = sheet.cell(row=i, column=3).value 
+            if m is None:  # Handle None case
+                m = 0
+            else:
+                m = int(m)  # Convert to integer if it's a string
+            m += 1
+            sheet.cell(row=i, column=3).value = m 
+            savefile() 
+            no_of_days.append(m) 
+            row_num.append(i) 
+
+    elif y == 2: 
+        if sheet.cell(row=i, column=1).value == student: 
+            m = sheet.cell(row=i, column=4).value 
+            if m is None:
+                m = 0
+            else:
+                m = int(m)  # Convert to integer if it's a string
+            m += 1
+            sheet.cell(row=i, column=4).value = m 
+            no_of_days.append(m) 
+            row_num.append(i) 
+
+    elif y == 3: 
+        if sheet.cell(row=i, column=1).value == student: 
+            m = sheet.cell(row=i, column=5).value 
+            if m is None:
+                m = 0
+            else:
+                m = int(m)  # Convert to integer if it's a string
+            m += 1
+            sheet.cell(row=i, column=5).value = m 
+            row_num.append(i) 
+            no_of_days.append(m) 
+```
+
+### Summary
+- **Check for `None`:** If the cell is empty, set `m` to `0`.
+- **Convert to Integer:** Always convert `m` to an integer before performing arithmetic operations.
+
+After making these changes, your code should work without raising the `TypeError`. Let me know if you need further help!
