@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Student Portal</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="motto">
+            <p>"Manage Services and Users for a Better Experience"</p>
+        </div>
+        <div class="logo-title">
+            <img src="logo.png" alt="Logo" class="logo">
+            <h1>Admin Dashboard</h1>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="#"><img src="profile-icon.png" alt="Profile"> Your Profile</a></li>
+            <li><a href="#">Manage Services</a></li>
+            <li><a href="#">Manage Users</a></li>
+        </ul>
+    </nav>
+
+    <!-- Admin Form Section: Manage Services -->
+    <div class="admin-form-container">
+        <h2>Manage Services</h2>
+        <form action="admin-service-actions.php" method="POST" class="admin-form">
+            <div class="input-group">
+                <label for="service-id">Service ID:</label>
+                <input type="text" id="service-id" name="service-id" placeholder="Enter Service ID" required>
+            </div>
+            <div class="input-group">
+                <label for="service-action">Action:</label>
+                <select id="service-action" name="service-action" required>
+                    <option value="insert">Insert</option>
+                    <option value="update">Update</option>
+                    <option value="delete">Delete</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="service-name">Service Name:</label>
+                <input type="text" id="service-name" name="service-name" placeholder="Enter Service Name" required>
+            </div>
+            <div class="input-group">
+                <label for="service-description">Service Description:</label>
+                <textarea id="service-description" name="service-description" placeholder="Enter Service Description"></textarea>
+            </div>
+            <div class="input-group">
+                <label for="service-status">Service Status:</label>
+                <select id="service-status" name="service-status">
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-service">Submit</button>
+        </form>
+    </div>
+
+    <!-- Admin Form Section: Manage Users -->
+    <div class="admin-form-container">
+        <h2>Manage Users (Students & Service Providers)</h2>
+        <form action="admin-user-actions.php" method="POST" class="admin-form">
+            <div class="input-group">
+                <label for="user-id">User ID:</label>
+                <input type="text" id="user-id" name="user-id" placeholder="Enter User ID" required>
+            </div>
+            <div class="input-group">
+                <label for="user-action">Action:</label>
+                <select id="user-action" name="user-action" required>
+                    <option value="add">Add</option>
+                    <option value="remove">Remove</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="user-type">User Type:</label>
+                <select id="user-type" name="user-type">
+                    <option value="student">Student</option>
+                    <option value="service-provider">Service Provider</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-user">Submit</button>
+        </form>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-info">
+            <p>&copy; 2024 Student Portal | All Rights Reserved</p>
+            <p>Contact Us: contact@studentportal.com</p>
+        </div>
+    </footer>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>

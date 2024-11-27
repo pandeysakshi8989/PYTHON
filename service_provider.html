@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Provider Dashboard - Student Portal</title>
+    <link rel="stylesheet" href="/css/service_provider.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="motto">
+            <p>"Empowering Service Providers for Student Success"</p>
+        </div>
+        <div class="logo-title">
+            <img src="logo.png" alt="Logo" class="logo">
+            <h1>Service Provider Dashboard</h1>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="#"><img src="profile-icon.png" alt="Profile"> Your Profile</a></li>
+            <li><a href="#">Your Activity</a></li>
+            <li><a href="#">Service Register</a></li>
+            <li><a href="#">Service Ratings</a></li>
+        </ul>
+    </nav>
+
+    <!-- Service Registration Form -->
+    <div class="service-form-container">
+        <h2>Register Your Service</h2>
+        <form action="service-register-process.php" method="POST" enctype="multipart/form-data" class="service-form">
+            <div class="input-group">
+                <label for="service-id">Service ID:</label>
+                <input type="text" id="service-id" name="service-id" required placeholder="Enter service ID">
+            </div>
+            <div class="input-group">
+                <label for="type">Service Type:</label>
+                <select id="type" name="type" required>
+                    <option value="Academic">Academic</option>
+                    <option value="Food">Food</option>
+                    <option value="Living">Living</option>
+                    <option value="Opportunity">Opportunity</option>
+                    <option value="Group">Group</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="name">Service Name:</label>
+                <input type="text" id="name" name="name" required placeholder="Enter service name">
+            </div>
+            <div class="input-group">
+                <label for="place">Service Location:</label>
+                <input type="text" id="place" name="place" required placeholder="Enter service location">
+            </div>
+            <div class="input-group">
+                <label for="description">Service Description:</label>
+                <textarea id="description" name="description" required placeholder="Describe your service here"></textarea>
+            </div>
+            <div class="input-group">
+                <label for="file-upload">Upload Service Image:</label>
+                <input type="file" id="file-upload" name="file-upload">
+            </div>
+            <div class="input-group">
+                <label for="approvation-details">Appropriation Details:</label>
+                <textarea id="approvation-details" name="approvation-details" required placeholder="Provide approval details here"></textarea>
+            </div>
+            <div class="input-group">
+                <label for="current-status">Current Status:</label>
+                <select id="current-status" name="current-status" required>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-service">Submit Service</button>
+        </form>
+    </div>
+
+    <!-- Service Provider Image Slider -->
+    <div class="slider-container">
+        <h2>Your Service Images</h2>
+        <div class="slider">
+            <div class="slide">
+                <img src="service1.jpg" alt="Service 1">
+            </div>
+            <div class="slide">
+                <img src="service2.jpg" alt="Service 2">
+            </div>
+            <div class="slide">
+                <img src="service3.jpg" alt="Service 3">
+            </div>
+            <!-- Add more slides as needed -->
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-info">
+            <p>&copy; 2024 Student Portal | All Rights Reserved</p>
+            <p>Contact Us: contact@studentportal.com</p>
+        </div>
+    </footer>
+
+    <script src="/js/service_provider.js"></script>
+</body>
+</html>
