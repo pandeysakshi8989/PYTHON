@@ -1,0 +1,209 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Header Styles */
+header {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.motto p {
+    font-size: 18px;
+    margin: 0;
+    font-style: italic;
+}
+
+.logo-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 36px;
+}
+
+/* Navigation Bar Styles */
+.navbar {
+    background-color: #333;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.navbar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Review Form Styles */
+.review-form-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.review-form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.review-form .input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.review-form .input-group label {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.review-form .input-group input,
+.review-form .input-group select,
+.review-form .input-group textarea {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.submit-review {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-review:hover {
+    background-color: #45a049;
+}
+
+/* Image Slider Styles */
+.slider-container {
+    margin: 50px auto;
+    width: 80%;
+}
+
+.slider {
+    display: flex;
+    overflow: hidden;
+    justify-content: space-between;
+}
+
+.slider .slide {
+    min-width: 100%;
+    transition: transform 0.5s ease;
+}
+
+.slider img {
+    width: 100%;
+    height: auto;
+}
+
+/* Contact Information Styles */
+.contact-info {
+    background-color: #fff;
+    padding: 30px;
+    text-align: center;
+    margin: 50px auto;
+    width: 80%;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contact-info a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.footer-info {
+    font-size: 14px;
+}
+
+.quick-links ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.quick-links ul li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.quick-links ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.quick-links ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .review-form-container {
+        width: 90%;
+        margin: 30px auto;
+    }
+
+    footer {
+        flex-direction: column;
+        text-align: center;
+    }
+}
