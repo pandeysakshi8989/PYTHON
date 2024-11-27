@@ -1,0 +1,231 @@
+@app.route("/users")
+def user_list():
+    users = db.session.execute(db.select(User).order_by(User.username)).scalars()
+    return render_template("user/list.html", users=users)
+
+@app.route("/users/create", methods=["GET", "POST"])
+def user_create():
+    if request.method == "POST":
+        user = User(
+            username=request.form["username"],
+            email=request.form["email"],
+        )
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for("user_detail", id=user.id))
+
+    return render_template("user/create.html")
+
+@app.route("/user/<int:id>")
+def user_detail(id):
+    user = db.get_or_404(User, id)
+    return render_template("user/detail.html", user=user)
+
+@app.route("/user/<int:id>/delete", methods=["GET", "POST"])
+def user_delete(id):
+    user = db.get_or_404(User, id)
+
+    if request.method == "POST":
+        db.session.delete(user)
+        db.session.commit()
+        return redirect(url_for("user_list"))
+
+    return render_template("user/delete.html", user=user)
+
+
+
+
+
+
+
+try:
+    # Connect to DB and create a cursor
+    sqliteConnection = sqlite3.connect('assignment.db')
+    cursor = sqliteConnection.cursor()
+    print('DB Init')
+    # Write a query and execute it with cursor
+    query = 'select sqlite_version();'
+    cursor.execute(query)
+    # Fetch and output result
+    result = cursor.fetchall()
+    print('SQLite Version is {}'.format(result))
+    # Close the cursor
+    cursor.close()
+# Handle errors
+except sqlite3.Error as error:
+    print('Error occurred - ', error)
+# Close DB Connection irrespective of success
+# or failure
+finally:
+    if sqliteConnection:
+        sqliteConnection.close()
+        print('SQLite Connection closed')
+        
+        
+        app.config['SQLALCHEMY_DATABASE_URI']="sqllite:///assignment.db"
+app.config['SQLALCHEMY_DATABASE_TRACK_MODIFICATIONS']=False
+db=SQLAlchemy(app)
+
+@app.route('/', methods=['GET', 'POST'])
+def form_data():
+    if request.method=='POST':
+        title = request.form['title']
+        desc = request.form['desc']
+    return render_template('index.html') 
+
+
+class Todo(db.Model):
+    sno=db.Column(db.Integer,primary_key=True)
+    title=db.Column(db.String(200),nullable=False)
+    desc=db.Column(db.String(500),nullable=False)
+    date_created=db.Column(db.DateTime)
+
+
+    def __repr__(self) -> str:
+        return f"{self.sno} - {self.title}"
+    
+import sqlite3
+
+conn = sqlite3.connect('database.db')
+print("Connected to database successfully")
+
+conn.execute('CREATE TABLE students (name TEXT, addr TEXT, city TEXT, zip TEXT)')
+print("Created table successfully!")
+
+conn.close()
+
+    
+from flask import Flask
+from flask import render_template
+from flask import request
+import sqlite3
+
+app = Flask(__name__)
+
+# Home Page route
+@app.route("/")
+def home():
+    return render_template("home.html")
+
+# Route to form used to add a new student to the database
+@app.route("/enternew")
+def enternew():
+    return render_template("student.html")
+
+# Route to add a new record (INSERT) student data to the database
+@app.route("/addrec", methods = ['POST', 'GET'])
+def addrec():
+    # Data will be available from POST submitted by the form
+    if request.method == 'POST':
+        try:
+            nm = request.form['nm']
+            addr = request.form['add']
+            city = request.form['city']
+            zip = request.form['zip']
+
+            # Connect to SQLite3 database and execute the INSERT
+            with sqlite3.connect('database.db') as con:
+                cur = con.cursor()
+                cur.execute("INSERT INTO students (name, addr, city, zip) VALUES (?,?,?,?)",(nm, addr, city, zip))
+
+                con.commit()
+                msg = "Record successfully added to database"
+        except:
+            con.rollback()
+            msg = "Error in the INSERT"
+
+        finally:
+            con.close()
+            # Send the transaction message to result.html
+            return render_template('result.html',msg=msg)
+
+# Route to SELECT all data from the database and display in a table      
+@app.route('/list')
+def list():
+    # Connect to the SQLite3 datatabase and 
+    # SELECT rowid and all Rows from the students table.
+    con = sqlite3.connect("database.db")
+    con.row_factory = sqlite3.Row
+
+    cur = con.cursor()
+    cur.execute("SELECT rowid, * FROM students")
+
+    rows = cur.fetchall()
+    con.close()
+    # Send the results of the SELECT to the list.html page
+    return render_template("list.html",rows=rows)
+
+# Route that will SELECT a specific row in the database then load an Edit form 
+@app.route("/edit", methods=['POST','GET'])
+def edit():
+    if request.method == 'POST':
+        try:
+            # Use the hidden input value of id from the form to get the rowid
+            id = request.form['id']
+            # Connect to the database and SELECT a specific rowid
+            con = sqlite3.connect("database.db")
+            con.row_factory = sqlite3.Row
+
+            cur = con.cursor()
+            cur.execute("SELECT rowid, * FROM students WHERE rowid = " + id)
+
+            rows = cur.fetchall()
+        except:
+            id=None
+        finally:
+            con.close()
+            # Send the specific record of data to edit.html
+            return render_template("edit.html",rows=rows)
+
+# Route used to execute the UPDATE statement on a specific record in the database
+@app.route("/editrec", methods=['POST','GET'])
+def editrec():
+    # Data will be available from POST submitted by the form
+    if request.method == 'POST':
+        try:
+            # Use the hidden input value of id from the form to get the rowid
+            rowid = request.form['rowid']
+            nm = request.form['nm']
+            addr = request.form['add']
+            city = request.form['city']
+            zip = request.form['zip']
+
+            # UPDATE a specific record in the database based on the rowid
+            with sqlite3.connect('database.db') as con:
+                cur = con.cursor()
+                cur.execute("UPDATE students SET name='"+nm+"', addr='"+addr+"', city='"+city+"', zip='"+zip+"' WHERE rowid="+rowid)
+
+                con.commit()
+                msg = "Record successfully edited in the database"
+        except:
+            con.rollback()
+            msg = "Error in the Edit: UPDATE students SET name="+nm+", addr="+addr+", city="+city+", zip="+zip+" WHERE rowid="+rowid
+
+        finally:
+            con.close()
+            # Send the transaction message to result.html
+            return render_template('result.html',msg=msg)
+
+# Route used to DELETE a specific record in the database    
+@app.route("/delete", methods=['POST','GET'])
+def delete():
+    if request.method == 'POST':
+        try:
+             # Use the hidden input value of id from the form to get the rowid
+            rowid = request.form['id']
+            # Connect to the database and DELETE a specific record based on rowid
+            with sqlite3.connect('database.db') as con:
+                    cur = con.cursor()
+                    cur.execute("DELETE FROM students WHERE rowid="+rowid)
+
+                    con.commit()
+                    msg = "Record successfully deleted from the database"
+        except:
+            con.rollback()
+            msg = "Error in the DELETE"
+
+        finally:
+            con.close()
+            # Send the transaction message to result.html
+            return render_template('result.html',msg=msg)
+        
